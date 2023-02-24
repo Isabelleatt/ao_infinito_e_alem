@@ -4,15 +4,18 @@ import numpy as np
 from multiuso import *
 
 class Planeta():
-    def __init__(self, pos, dimensao, atmosfera):
+    def __init__(self, pos, dimensao, atmosfera, c):
         self.pos = pos # [pos horizontal, pos vertical]
         self.raio = dimensao 
         self.atmosfera = atmosfera
+        self.c = c
     
     def desenha(self, screen, cor):
+        # pygame.draw.circle(screen, CINZA,
+        #            self.pos, self.raio + self.atmosfera, 3)
         pygame.draw.circle(screen, cor, self.pos, self.raio)
     
-    def calcula_gravidade(self,pos_bola, C, a_bola, vel_bola):
+    def calcula_gravidade(self,pos_bola, a_bola, vel_bola):
         dist = distancia_entre_pontos(self.pos, pos_bola)
         if dist < self.atmosfera:
             # direcionamento em relação a posição atual da bola na direção do planeta
@@ -24,7 +27,7 @@ class Planeta():
 
             # cálculo da força gravitacional
             # sendo C o produto entre a constante gravitacional e as massas do planeta e da bola
-            mag_a = C / modulo_vetor ** 2
+            mag_a = self.c / modulo_vetor ** 2
 
             a_bola = vetor_aceleracao * mag_a
             vel_bola = vel_bola + a_bola

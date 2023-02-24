@@ -1,6 +1,13 @@
 import pygame
 import numpy as np
 
+def limita_velocidade(v):
+        if abs(v) > 50: 
+            if v > 0:
+                return 50
+            return -50
+        return v
+
 class Bola():
 
     def __init__(self, posicao, dimensao):
@@ -17,7 +24,7 @@ class Bola():
         rect = pygame.Rect(self.pos, self.dim)
         self.surface.fill(cor)
         screen.blit(self.surface, rect)
-
+    
     def lancamento(self, tentativa, pos_inicial, pos_final):
         if self.lancada == 1 and not tentativa:
             self.lancada = 2
@@ -27,9 +34,13 @@ class Bola():
             modulo_vetor = np.linalg.norm(direcao)
             vetor_aceleracao = direcao/ modulo_vetor
 
-            mag_a = 17
+            mag_a = 0.5 * abs(direcao)
 
             self.vel = vetor_aceleracao * mag_a
+            
+            self.vel[0] = limita_velocidade(self.vel[0])
+            self.vel[1] = limita_velocidade(self.vel[1])
+            
         if self.lancada == 0:
             return False
         return True
@@ -41,3 +52,8 @@ class Bola():
 
     def movimento(self):
         self.pos = self.pos + 0.1 * self.vel
+    
+    def reiniciar(self):
+        self.vel = np.array([0,0])
+        self.surface = pygame.Surface(self.dim)
+        self.lancada = 0

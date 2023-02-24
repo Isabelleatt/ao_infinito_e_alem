@@ -1,4 +1,4 @@
-from classes import *
+from Jogo import Jogo
 
 #LOOP DO JOGO 
 

@@ -14,7 +14,7 @@ class Estrela:
     
     def colisao_bola(self, pos_bola):
         distancia = distancia_entre_pontos(self.pos, pos_bola)
-        if distancia <= self.raio + 5:
+        if distancia <= self.raio + 8:
             return True
         return False
 

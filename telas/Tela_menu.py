@@ -1,5 +1,4 @@
 import pygame
-import numpy as np
 from multiuso import *
 from fases.Fase import *
 from info_fases import info_fases
@@ -9,7 +8,7 @@ class Tela_menu():
     def __init__(self, nivel_atual):
         self.fundo = pygame.image.load('Assets\\tela_inicial\menu_inicial.png').convert_alpha()
         self.rect_botao_play = (360,370,230,40)
-        self.rect_botao_regras = (685,450,240,56)
+        self.rect_botao_regras = (360,480,230,40)
         self.nivel_atual = nivel_atual    
 
     def atualiza(self):
@@ -34,7 +33,7 @@ class Tela_menu():
                         reiniciar_fase(tela)
                         return tela
                     elif colisao_ponto_retangulo(self.rect_botao_regras, event.pos[0],event.pos[1]):
-                        
+
                         return Regras()
         return self    
                 

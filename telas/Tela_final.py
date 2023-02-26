@@ -4,7 +4,7 @@ from telas.Tela_menu import Tela_menu
 
 class Tela_final():
     def __init__(self, fase_atual):
-        self.fundo = pygame.image.load('Assets\\menu_jogo\menu_jogo.png').convert_alpha()
+        self.fundo = pygame.image.load('Assets\\resultado\ganhou_final.png').convert_alpha()
         self.rect_botao_menu = (425,309,280,40)
         self.rect_botao_again = (425,404,280,60)
         self.fase_atual = fase_atual

@@ -1,5 +1,4 @@
 import pygame
-import numpy as np
 from multiuso import *
 from telas.Tela_menu import Tela_menu
 from info_fases import info_fases

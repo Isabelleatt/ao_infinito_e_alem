@@ -12,6 +12,8 @@ from info_fases import info_fases
 class Fase():
     def __init__(self, planetas, bolas, pos_inicial, qtd_bolas, estrelas, nivel,portal= False) :
 
+        pygame.mixer.init()
+
         # planetas
         self.planetas = planetas
 
@@ -43,7 +45,8 @@ class Fase():
         self.img_planeta_100 = pygame.image.load('Assets\\planetas\planeta_100.png').convert_alpha()
         self.img_pontos = pygame.transform.scale(self.img_estrela, (50,50))
 
-        
+        # Efeitos sonoros
+        self.som_coletou = pygame.mixer.Sound('Assets/efeitos_sonoros/bonus.mp3')
         
 
 
@@ -120,6 +123,7 @@ class Fase():
         for estrela in self.estrelas:
 
             if estrela.colisao_bola(self.atual.pos) and not estrela.coletada:
+                pygame.mixer.Sound.play(self.som_coletou)
                 self.pontos += 1
                 estrela.coletada = True
 

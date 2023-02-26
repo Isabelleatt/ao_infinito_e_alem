@@ -10,10 +10,10 @@ class Planeta():
         self.atmosfera = atmosfera
         self.c = c
     
-    def desenha(self, screen, cor):
-        # pygame.draw.circle(screen, CINZA,
-        #            self.pos, self.raio + self.atmosfera, 3)
-        pygame.draw.circle(screen, cor, self.pos, self.raio)
+    def desenha(self, screen, imagem):
+        # pygame.draw.circle(screen, ROSA, self.pos, self.raio)
+        pos = self.pos - np.array([self.raio, self.raio])
+        screen.blit(imagem, pos)
     
     def calcula_gravidade(self,pos_bola, a_bola, vel_bola):
         dist = distancia_entre_pontos(self.pos, pos_bola)

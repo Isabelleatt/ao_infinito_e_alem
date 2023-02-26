@@ -33,6 +33,16 @@ class Fase():
         self.portais = portal
 
         self.primeiro_click = True
+
+        self.fundo = pygame.image.load('Assets\\background\\fundo.png').convert_alpha()
+        self.vida = pygame.image.load('Assets\\vidas\\gato_vivo.png').convert_alpha()
+        self.morto = pygame.image.load('Assets\\vidas\\gato_morto.png').convert_alpha()
+        # self.imagem_bola = pygame.transform.scale(self.vida, (40,40))
+        self.img_estrela = pygame.image.load('Assets\\recompensa\estrela.png').convert_alpha()
+        self.img_planeta_80 = pygame.image.load('Assets\\planetas\planeta_80.png').convert_alpha()
+        self.img_planeta_100 = pygame.image.load('Assets\\planetas\planeta_100.png').convert_alpha()
+        self.img_pontos = pygame.transform.scale(self.img_estrela, (50,50))
+
         
         
 
@@ -115,6 +125,8 @@ class Fase():
 
         # VITÓRIA
         if self.pontos == 3:
+            if self.nivel == 4:
+                return "final"
             return "vitoria"
         
         
@@ -124,48 +136,64 @@ class Fase():
 
     def desenha(self, screen, fonte):
         screen.fill((0,0,0))
-        for planeta in self.planetas:
-            planeta.desenha(screen, ROSA)
+        screen.blit(self.fundo,(0,0))
 
+        # PLANETAS
+        for planeta in self.planetas:
+            if planeta.raio == 80:
+                planeta.desenha(screen, self.img_planeta_80)
+            else:
+                planeta.desenha(screen, self.img_planeta_100)
+
+        # BOLAS
         for i in range(self.indice+1):
             bola = self.bolas[i]
             if i == self.indice:
-                bola.desenha(screen, VERDE)
+                bola.desenha(screen, LARJ)
             else:
-                bola.desenha(screen, CINZA)
+                bola.desenha(screen, ROSA)
 
+        # ESTRELAS
         for estrela in self.estrelas:
             if not estrela.coletada:
-                estrela.desenha(screen, AMARELO)
+                estrela.desenha(screen, self.img_estrela)
         
+        # LINHA DE LANÇAMENTO
         if self.atual.lancada == 0: # desnha a linha do lançamento atual
-            pygame.draw.line(screen, BRANCO, self.pos_inicial, pygame.mouse.get_pos(), 2)
+            pygame.draw.line(screen, BRANCO, self.atual.pos_centro, pygame.mouse.get_pos(), 2)
         if self.indice >=1: # desenha a linha do último lançamento
-            pygame.draw.line(screen, CINZA, self.pos_inicial, self.pos_final, 1)
+            pygame.draw.line(screen, CINZA, self.atual.pos_centro, self.pos_final, 1)
         
-        # desenha o número de estrelas pegas
-        estrela = Estrela(np.array([WIDTH-60, 20]), 6).desenha(screen, AMARELO)
+        # número de estrelas pegas
+        estrela = Estrela(np.array([WIDTH-90, 10]), 6).desenha(screen, self.img_pontos)
         pontos = fonte.render(f'{self.pontos:.0f}', False, BRANCO)
-        screen.blit(pontos, (WIDTH-40,10))
+        screen.blit(pontos, (WIDTH-50,10))
 
-        # desenha o número de bolas restantes
-
+        # número de vidas restantes
         n_vidas = self.n_bolas-self.indice
         if self.atual.lancada == 2:
             n_vidas -=1
 
-        vidas = [Bola(np.array([20 + i*20,20]), np.array([8,8])) for i in range(n_vidas)]
-        for i in vidas:
-            i.desenha(screen, VERDE)
+        # vidas = [Bola(np.array([20 + i*20,20]), np.array([8,8])) for i in range(n_vidas)]
+        # pos_vidas = [np.array([20 + i*50,20]) for i in range(n_vidas)]
+        for i in range(self.n_bolas):
+            pos = np.array([20 + i*50,15])
+            if i < n_vidas:
+                screen.blit(self.vida, pos)
+            else:
+                screen.blit(self.morto, pos)
+        # for i in pos_vidas:
+        #     # i.desenha(screen, VERDE)
+            
 
-        # 
+        # PORTAIS
         cores_portais = [ROXO, AZUL]
         if self.portais:
             for i in range(len(self.portais)):
                 portal = self.portais[i]
                 portal.desenha(screen, cores_portais[i])
     
-
+# FUNÇÕES DE CRIAÇÃO DE FASE #############################################################
 def derrota(nivel_atual):
     i = nivel_atual
     fase_atual = Fase(

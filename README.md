@@ -38,7 +38,7 @@ Para rodar o jogo é apenas necessário executar o arquivo main.py, podendo o me
 
 1. O jogador deve acertar as estrelas com a bolinha;
 2. Para passar de fase, o jogador deve acertar todas as estrelas;
-3. O jogador possui 3 vidas a cada fase;
+3. O jogador possui 5 vidas a cada fase;
 4. O jogo possui 4 fases que se tornam cada vez mais difíceis;
 5. Os planetas são os obstáculos do jogo, que possuem uma força gravitacional que atraem a bolinha para o seu centro;
 6. Para lançar a bolinha, o jogador terá como apoio para mirar em direção as estrelas, uma linha branca que indica a direção e a força do lançamento;

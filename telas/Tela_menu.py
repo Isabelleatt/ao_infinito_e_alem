@@ -3,6 +3,7 @@ import numpy as np
 from multiuso import *
 from fases.Fase import *
 from info_fases import info_fases
+from telas.Tela_regras import Regras
 
 class Tela_menu():
     def __init__(self, nivel_atual):
@@ -33,6 +34,7 @@ class Tela_menu():
                         reiniciar_fase(tela)
                         return tela
                     elif colisao_ponto_retangulo(self.rect_botao_regras, event.pos[0],event.pos[1]):
+                        
                         return Regras()
         return self    
                 

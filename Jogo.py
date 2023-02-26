@@ -1,9 +1,10 @@
 import pygame
 from random import *
-import numpy as np
-from telas.Tela_inicial import Tela_inicial
+
+from telas.Tela_menu import Tela_menu
 from telas.Tela_vitoria import Tela_vitoria
 from telas.Tela_derrota import Tela_derrota
+from telas.Tela_final import Tela_final
 from fases.Fase import *
 
 from info_fases import info_fases
@@ -18,12 +19,13 @@ class Jogo:
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Ao infinito e além!")
-
-        self.tela_atual = Tela_inicial()
+        
+        self.nivel_atual = 4
+        self.tela_atual = Tela_menu(self.nivel_atual)
         self.clock = pygame.time.Clock()
         self.fps = 60
-        self.fonte = pygame.font.SysFont('Anton', 30)
-        self.nivel_atual = 0
+        self.fonte = pygame.font.SysFont('Anton', 50)
+        
     
     def atualiza(self):
 
@@ -36,6 +38,10 @@ class Jogo:
         elif self.tela_atual == "vitoria":
             fase_atual, proxima_fase = vitoria(self.nivel_atual)
             self.tela_atual = Tela_vitoria(fase_atual, proxima_fase)
+        
+        elif self.tela_atual == "final":
+            fase_atual = derrota(self.nivel_atual)
+            self.tela_atual = Tela_final(fase_atual)
         
         elif self.tela_atual == "derrota":
             fase_atual = derrota(self.nivel_atual)

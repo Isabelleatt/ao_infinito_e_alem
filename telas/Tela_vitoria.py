@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 from multiuso import *
-from telas.Tela_inicial import Tela_inicial
+from telas.Tela_menu import Tela_menu
 from info_fases import info_fases
 
 class Tela_vitoria():
@@ -21,7 +21,7 @@ class Tela_vitoria():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if colisao_ponto_retangulo(self.rect_botao_menu, event.pos[0],event.pos[1]):
-                        return Tela_inicial()
+                        return Tela_menu(self.nivel + 1)
                     elif colisao_ponto_retangulo(self.rect_botao_again, event.pos[0],event.pos[1]):  
                         tela = self.fase_atual
                         return tela

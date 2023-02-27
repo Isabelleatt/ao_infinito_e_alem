@@ -94,7 +94,7 @@ mag_a = self.c / modulo_vetor ** 2
 a_bola = vetor_aceleracao * mag_a
 vel_bola = vel_bola + a_bola
 ```
-O cálculo da velocidade da bolinha atraída pelo planeta, é praticamente o mesmo que o do lançamento, porém com a magnitude do vetor velocidade calculada através da força gravitacional.
+O cálculo da velocidade da bolinha atraída pelo planeta, é semelhante ao do lançamento, porém com a magnitude do vetor da aceleração calculada através da força gravitacional.
 
 $$
 \boldsymbol{F_g} = C / d^2
@@ -108,4 +108,20 @@ $$
 
 E $C$ o produto entre a constante gravitacional, a massa do planeta e a massa da bolinha.
 
+## Soprador
+O funcionamento do soprador consiste em direcionar a velocidade da bola para a qual o soprador está apontando.
 
+Por exemplo, quando o soprador está apontando para a direita. Nesse caso, a sua velocidade horizontal deve ser positiva e sua aceleração horizontal deve ser alta. Já no eixo vertical, diminui-se 70% da velocidade.
+
+```
+if self.direcao == 'direita':
+    vel_bola = np.array([abs(vel_bola[0]), vel_bola[1]*0.3])
+    a = a_bola * np.array([300,0])
+elif self.direcao == 'esquerda':
+    ...
+```
+
+A velocidade é acelerada a partir da aceleração calculada de acordo com o caso em questão.
+```
+vel_bola = vel_bola + a
+```

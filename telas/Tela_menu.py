@@ -2,6 +2,7 @@ import pygame
 from multiuso import *
 from fases.Fase import *
 from telas.Tela_regras import Regras
+from telas.Tela_fases import Tela_fases
 
 class Tela_menu():
 
@@ -20,6 +21,7 @@ class Tela_menu():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if colisao_ponto_retangulo(self.rect_botao_play, event.pos[0],event.pos[1]):
+                        return Tela_fases()
                         tela = criar_fase(self.nivel_atual)
                         return tela
                     

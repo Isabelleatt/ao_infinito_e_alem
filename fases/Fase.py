@@ -51,6 +51,13 @@ class Fase():
 
         # IMAGENS
         self.img_fundo = pygame.image.load('Assets\\background\\fundo.png').convert_alpha()
+        self.img_fases = [
+            pygame.image.load('Assets\\fases\\tutorial.png').convert_alpha(),
+            pygame.image.load('Assets\\fases\\fase_1.png').convert_alpha(),
+            pygame.image.load('Assets\\fases\\fase_2.png').convert_alpha(),
+            pygame.image.load('Assets\\fases\\fase_3.png').convert_alpha(),
+            pygame.image.load('Assets\\fases\\fase_4.png').convert_alpha(),
+            ]
         # vidas
         self.img_vida = pygame.image.load('Assets\\vidas\\gato_vivo.png').convert_alpha()
         self.img_morto = pygame.image.load('Assets\\vidas\\gato_morto.png').convert_alpha()
@@ -148,6 +155,7 @@ class Fase():
     def desenha(self, screen, fonte):
         screen.fill((0,0,0))
         screen.blit(self.img_fundo,(0,0))
+        screen.blit(self.img_fases[self.nivel], (0,0))
 
         # PLANETAS
         for planeta in self.planetas:
@@ -176,9 +184,9 @@ class Fase():
             pygame.draw.line(screen, CINZA, self.atual.pos_centro, self.pos_mouse, 1)
         
         # número de estrelas pegas
-        estrela = Estrela(np.array([WIDTH-140, 20]), 6).desenha(screen, self.img_pontos)
+        estrela = Estrela(np.array([WIDTH-80, 20]), 6).desenha(screen, self.img_pontos)
         pontos = fonte.render(f'{self.pontos:.0f}', False, BRANCO)
-        screen.blit(pontos, (WIDTH-100,20))
+        screen.blit(pontos, (WIDTH-40,20))
 
         # número de vidas restantes
         n_vidas = self.n_bolas-self.indice

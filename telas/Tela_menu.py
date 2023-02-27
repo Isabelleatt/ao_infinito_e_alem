@@ -15,23 +15,14 @@ class Tela_menu():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return None
+            
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if colisao_ponto_retangulo(self.rect_botao_play, event.pos[0],event.pos[1]):  
-                        i = self.nivel_atual
+                    if colisao_ponto_retangulo(self.rect_botao_play, event.pos[0],event.pos[1]):
 
-                        tela = Fase(
-                            planetas = info_fases[i]['planetas'],
-                            pos_inicial = info_fases[i]['pos_inicial'],
-                            bolas = info_fases[i]['bolas'],
-                            qtd_bolas = info_fases[i]['qtd_bolas'],
-                            estrelas = info_fases[i]['estrelas'],
-                            portal = info_fases[i]['portal'],
-                            nivel = info_fases[i]['nivel'],
-                        )
-
-                        reiniciar_fase(tela)
+                        tela = criar_fase(self.nivel_atual)
                         return tela
+                    
                     elif colisao_ponto_retangulo(self.rect_botao_regras, event.pos[0],event.pos[1]):
 
                         return Regras()

@@ -44,12 +44,12 @@ class Jogo:
             pygame.mixer.Sound.play(self.som_ganhou)
         
         elif self.tela_atual == "final":
-            fase_atual = derrota(self.nivel_atual)
+            fase_atual = criar_fase(self.nivel_atual)
             self.tela_atual = Tela_final(fase_atual)
             pygame.mixer.Sound.play(self.som_ganhou)
 
         elif self.tela_atual == "derrota":
-            fase_atual = derrota(self.nivel_atual)
+            fase_atual = criar_fase(self.nivel_atual)
             self.tela_atual = Tela_derrota(fase_atual)
             pygame.mixer.Sound.play(self.som_perdeu)
 

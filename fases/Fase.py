@@ -4,20 +4,20 @@ from elementos.Planeta import Planeta
 from elementos.Bola import Bola
 from elementos.Estrela import Estrela
 from elementos.Portal import Portal
+from elementos.Soprador import Soprador
 from multiuso import *
 from info_fases import info_fases
 
-# from telas.Tela_vitoria import Tela_vitoria
 
 class Fase():
-    def __init__(self, planetas, bolas, pos_inicial, qtd_bolas, estrelas, nivel,portal= False) :
+    def __init__(self, planetas, bolas, pos_inicial, qtd_bolas, estrelas, nivel,portal= False, soprador=False) :
 
         pygame.mixer.init()
 
-        # planetas
+        # PLANETAS
         self.planetas = planetas
 
-        # bolas
+        # BOLAS
         self.pos_inicial = pos_inicial
         self.bolas = bolas
         self.indice = 0
@@ -25,25 +25,32 @@ class Fase():
         self.n_bolas = qtd_bolas
 
         # lançamento
-        self.pos_final = np.array([0,0])
+        self.pos_mouse = np.array([0,0])
         self.tentativa = False # indica se a bola já está em andamento (true) ou não (false)
+        self.primeiro_click = True 
 
-        # estrelas
+        # ESTRELAS
         self.estrelas = estrelas
         self.pontos = 0 # qtd de estrelas coletadas
         self.nivel = nivel
+
+        # PORTAIS
         self.portais = portal
 
-        self.primeiro_click = True
+        # SOPRADOR
+        self.soprador = soprador
 
-        self.fundo = pygame.image.load('Assets\\background\\fundo.png').convert_alpha()
-        self.vida = pygame.image.load('Assets\\vidas\\gato_vivo.png').convert_alpha()
-        self.morto = pygame.image.load('Assets\\vidas\\gato_morto.png').convert_alpha()
+        # IMAGENS
+        self.img_fundo = pygame.image.load('Assets\\background\\fundo.png').convert_alpha()
+        self.img_vida = pygame.image.load('Assets\\vidas\\gato_vivo.png').convert_alpha()
+        self.img_morto = pygame.image.load('Assets\\vidas\\gato_morto.png').convert_alpha()
         # self.imagem_bola = pygame.transform.scale(self.vida, (40,40))
         self.img_estrela = pygame.image.load('Assets\\recompensa\estrela.png').convert_alpha()
         self.img_planeta_80 = pygame.image.load('Assets\\planetas\planeta_80.png').convert_alpha()
         self.img_planeta_100 = pygame.image.load('Assets\\planetas\planeta_100.png').convert_alpha()
         self.img_pontos = pygame.transform.scale(self.img_estrela, (50,50))
+        self.img_soprador = pygame.image.load('Assets\\soprador\soprador_80x80.png').convert_alpha()
+
 
         # Efeitos sonoros
         self.som_coletou = pygame.mixer.Sound('Assets/efeitos_sonoros/bonus.mp3')
@@ -62,7 +69,7 @@ class Fase():
                     self.primeiro_click = False
                     pygame.time.delay(100)
                 else:
-                    self.pos_final = pygame.mouse.get_pos()
+                    self.pos_mouse = pygame.mouse.get_pos()
                     self.atual.lancada = 1
 
             elif event.type == pygame.KEYDOWN:
@@ -70,18 +77,22 @@ class Fase():
                 # caso o usuário aperte p, ele pode lançar a próxima bola
                 if event.key == pygame.K_p:
                     self.indice += 1
+
                     # DERROTA
                     if self.indice >= self.n_bolas:
                         return "derrota"
+                    
+                    if self.soprador:
+                        self.soprador.assoprou = False
+                    
                     self.atual = self.bolas[self.indice]
                     self.tentativa = False
-                    
                     
                     return self
 
 
         # realiza o lançamento da bola
-        self.tentativa = self.atual.lancamento(self.tentativa, self.pos_inicial, self.pos_final)
+        self.tentativa = self.atual.lancamento(self.tentativa, self.pos_mouse)
         
         if self.tentativa:
             for planeta in self.planetas:
@@ -92,9 +103,14 @@ class Fase():
                 # verifica se a bola colidiu com algum planeta
                 if planeta.colisao_bola(self.atual.pos):
                     self.indice += 1
-           
+                    
+                    # DERROTA
+                    if self.indice >= self.n_bolas:
+                        return "derrota"
+                    if self.soprador:
+                        self.soprador.assoprou = False
+                    
                     self.atual = self.bolas[self.indice]
-          
                     self.tentativa = False
                     return self
         
@@ -106,6 +122,9 @@ class Fase():
             if self.indice >= self.n_bolas:
                 return "derrota"
             
+            if self.soprador:
+                self.soprador.assoprou = False
+            
             self.atual = self.bolas[self.indice]
             self.tentativa = False
 
@@ -114,7 +133,15 @@ class Fase():
         # se houver portal, verifica a possibilidade de teletransportar
         if self.portais:
             for portal in self.portais:
-                self.atual.vel, self.atual.pos = portal.teletransporta(self.atual.vel, self.atual.pos, True)
+                self.atual.vel, self.atual.pos = portal.teletransporta(self.atual.vel, self.atual.pos)
+
+        # SOPRADOR
+        if self.soprador:
+            c = colisao_ponto_retangulo((self.soprador.pos[0] + self.soprador.dim[0], self.soprador.pos[1], self.soprador.alc, self.soprador.dim[0]), self.atual.pos[0], self.atual.pos[1])
+            if c and not self.soprador.assoprou:
+                self.atual.vel = self.soprador.assoprar(self.atual.vel, self.atual.a)
+                print(self.atual.vel)
+                self.soprador.assoprou = True
 
         # movimenta a bola
         self.atual.movimento()
@@ -133,14 +160,12 @@ class Fase():
                 return "final"
             return "vitoria"
         
-        
-    
         return self
 
 
     def desenha(self, screen, fonte):
         screen.fill((0,0,0))
-        screen.blit(self.fundo,(0,0))
+        screen.blit(self.img_fundo,(0,0))
 
         # PLANETAS
         for planeta in self.planetas:
@@ -166,29 +191,24 @@ class Fase():
         if self.atual.lancada == 0: # desnha a linha do lançamento atual
             pygame.draw.line(screen, BRANCO, self.atual.pos_centro, pygame.mouse.get_pos(), 2)
         if self.indice >=1: # desenha a linha do último lançamento
-            pygame.draw.line(screen, CINZA, self.atual.pos_centro, self.pos_final, 1)
+            pygame.draw.line(screen, CINZA, self.atual.pos_centro, self.pos_mouse, 1)
         
         # número de estrelas pegas
-        estrela = Estrela(np.array([WIDTH-90, 10]), 6).desenha(screen, self.img_pontos)
+        estrela = Estrela(np.array([WIDTH-140, 20]), 6).desenha(screen, self.img_pontos)
         pontos = fonte.render(f'{self.pontos:.0f}', False, BRANCO)
-        screen.blit(pontos, (WIDTH-50,10))
+        screen.blit(pontos, (WIDTH-100,20))
 
         # número de vidas restantes
         n_vidas = self.n_bolas-self.indice
         if self.atual.lancada == 2:
             n_vidas -=1
 
-        # vidas = [Bola(np.array([20 + i*20,20]), np.array([8,8])) for i in range(n_vidas)]
-        # pos_vidas = [np.array([20 + i*50,20]) for i in range(n_vidas)]
         for i in range(self.n_bolas):
             pos = np.array([20 + i*50,15])
             if i < n_vidas:
-                screen.blit(self.vida, pos)
+                screen.blit(self.img_vida, pos)
             else:
-                screen.blit(self.morto, pos)
-        # for i in pos_vidas:
-        #     # i.desenha(screen, VERDE)
-            
+                screen.blit(self.img_morto, pos)           
 
         # PORTAIS
         cores_portais = [ROXO, AZUL]
@@ -196,9 +216,13 @@ class Fase():
             for i in range(len(self.portais)):
                 portal = self.portais[i]
                 portal.desenha(screen, cores_portais[i])
+
+        if self.soprador:
+            self.soprador.desenha(screen, self.img_soprador)
     
 # FUNÇÕES DE CRIAÇÃO DE FASE #############################################################
-def derrota(nivel_atual):
+
+def criar_fase(nivel_atual):
     i = nivel_atual
     fase_atual = Fase(
                 planetas = info_fases[i]['planetas'],
@@ -208,32 +232,16 @@ def derrota(nivel_atual):
                 estrelas = info_fases[i]['estrelas'],
                 portal = info_fases[i]['portal'],
                 nivel = info_fases[i]['nivel'],
+                soprador = info_fases[i]['soprador']
             )
     reiniciar_fase(fase_atual)
     return fase_atual
 
 def vitoria(nivel_atual):
     i = nivel_atual
-    fase_atual = Fase(
-                planetas = info_fases[i]['planetas'],
-                pos_inicial = info_fases[i]['pos_inicial'],
-                bolas = info_fases[i]['bolas'],
-                qtd_bolas = info_fases[i]['qtd_bolas'],
-                estrelas = info_fases[i]['estrelas'],
-                portal = info_fases[i]['portal'],
-                nivel = info_fases[i]['nivel'],
-            )
-    reiniciar_fase(fase_atual)
+    fase_atual = criar_fase(i)
     i += 1
-    proxima_fase = Fase(
-                        planetas = info_fases[i]['planetas'],
-                        pos_inicial = info_fases[i]['pos_inicial'],
-                        bolas = info_fases[i]['bolas'],
-                        qtd_bolas = info_fases[i]['qtd_bolas'],
-                        estrelas = info_fases[i]['estrelas'],
-                        portal = info_fases[i]['portal'],
-                        nivel = info_fases[i]['nivel'],
-                    )
+    proxima_fase = criar_fase(i)
     return fase_atual, proxima_fase
 
 def reiniciar_fase(fase):

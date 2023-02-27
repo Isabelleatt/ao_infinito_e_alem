@@ -18,7 +18,7 @@ class Bola():
         self.pos_centro = self.pos + np.array([self.dim[0]/2, self.dim[1]/2])
         
         self.lancada = 0 # 0 - ainda não foi lançada, 1 - acabou de ser lançada, 2 - já está em movimento
-        self.a = np.array([0,0]) # aceleração
+        self.a = np.array([1,1]) # aceleração
 
         
 
@@ -27,16 +27,13 @@ class Bola():
         rect = pygame.Rect(self.pos, self.dim)
         self.surface.fill(cor)
         screen.blit(self.surface, rect)
-        # self.vida = pygame.image.load('Assets\\vidas\\gato_vivo.png').convert_alpha()
-        # self.imagem_bola = pygame.transform.scale(self.vida, (22,22))
-        # screen.blit(self.imagem_bola, self.pos)
     
-    def lancamento(self, tentativa, pos_inicial, pos_final):
+    def lancamento(self, tentativa, pos_mouse):
         if self.lancada == 1 and not tentativa:
             self.lancada = 2
             tentativa = True
 
-            direcao = np.array(self.pos_centro) - np.array(pos_final)
+            direcao = np.array(self.pos_centro) - np.array(pos_mouse)
 
             modulo_vetor = np.linalg.norm(direcao)
             vetor_aceleracao = direcao/ modulo_vetor

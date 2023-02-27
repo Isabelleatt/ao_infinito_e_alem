@@ -133,7 +133,7 @@ class Fase():
         # se houver portal, verifica a possibilidade de teletransportar
         if self.portais:
             for portal in self.portais:
-                self.atual.vel, self.atual.pos = portal.teletransporta(self.atual.vel, self.atual.pos, True)
+                self.atual.vel, self.atual.pos = portal.teletransporta(self.atual.vel, self.atual.pos)
 
         # SOPRADOR
         if self.soprador:

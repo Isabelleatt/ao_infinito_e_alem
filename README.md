@@ -8,7 +8,8 @@ O jogo "Ao infinito e além" foi desenvolvido para a disciplina de Álgebra Line
 </p>
 
 # Video do Jogo
-* **Link:** 
+* **Link:** https://youtu.be/pZrxTLAaeHY
+[![Ao Infinito e Além | Vídeo demonstrativo](Assets/tela_inicial/menu_inicial.png.png)](https://youtu.be/pZrxTLAaeHY)
 * **Descrição:** Video demonstrativo do jogo
 
 # Integrantes do Grupo

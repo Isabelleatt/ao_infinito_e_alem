@@ -22,8 +22,6 @@ class Tela_menu():
                 if event.button == 1:
                     if colisao_ponto_retangulo(self.rect_botao_play, event.pos[0],event.pos[1]):
                         return Tela_fases()
-                        tela = criar_fase(self.nivel_atual)
-                        return tela
                     
                     elif colisao_ponto_retangulo(self.rect_botao_regras, event.pos[0],event.pos[1]):
                         return Regras()

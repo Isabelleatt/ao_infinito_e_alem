@@ -11,9 +11,6 @@ from info_fases import info_fases
 from multiuso import *
 
 
-
-#CORES
-
 class Jogo:
     def __init__(self):
         pygame.init()

@@ -16,14 +16,18 @@ class Portal():
         self.surface2 = pygame.Surface(dimensao2)
     
 
-    def desenha(self, screen, cor):
-        rect1 = pygame.Rect(self.pos1, self.dim1)
-        self.surface1.fill(cor)
-        screen.blit(self.surface1, rect1)
+    def desenha(self, screen, img, img_deitado):
+        if self.dim1[0] > self.dim1[1]:
+            screen.blit(img_deitado, self.pos1)
+        else:
+            screen.blit(img, self.pos1)
+        
+        if self.dim2[0] > self.dim2[1]:
+            screen.blit(img_deitado, self.pos2)
+        else:
+            screen.blit(img, self.pos2)
 
-        rect2 = pygame.Rect(self.pos2, self.dim2)
-        self.surface2.fill(cor)
-        screen.blit(self.surface2, rect2)
+
     
 
     def teletransporta(self, vel_bola, pos_bola):

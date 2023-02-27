@@ -1,18 +1,27 @@
 import pygame
 import numpy as np
-from elementos.Planeta import Planeta
-from elementos.Bola import Bola
 from elementos.Estrela import Estrela
-from elementos.Portal import Portal
-from elementos.Soprador import Soprador
 from multiuso import *
 from info_fases import info_fases
 
+def morte(fase):
+    fase.indice += 1
+
+    # DERROTA
+    if fase.indice >= fase.n_bolas:
+        return "derrota"
+    
+    if fase.soprador:
+        fase.soprador.assoprou = False
+    
+    fase.atual = fase.bolas[fase.indice]
+    fase.tentativa = False
+    
+    return fase
 
 class Fase():
     def __init__(self, planetas, bolas, pos_inicial, qtd_bolas, estrelas, nivel,portal= False, soprador=False) :
 
-        pygame.mixer.init()
 
         # PLANETAS
         self.planetas = planetas
@@ -25,7 +34,7 @@ class Fase():
         self.n_bolas = qtd_bolas
 
         # lançamento
-        self.pos_mouse = np.array([0,0])
+        self.pos_mouse = pygame.mouse.get_pos()
         self.tentativa = False # indica se a bola já está em andamento (true) ou não (false)
         self.primeiro_click = True 
 
@@ -42,20 +51,24 @@ class Fase():
 
         # IMAGENS
         self.img_fundo = pygame.image.load('Assets\\background\\fundo.png').convert_alpha()
+        # vidas
         self.img_vida = pygame.image.load('Assets\\vidas\\gato_vivo.png').convert_alpha()
         self.img_morto = pygame.image.load('Assets\\vidas\\gato_morto.png').convert_alpha()
-        # self.imagem_bola = pygame.transform.scale(self.vida, (40,40))
+        # elementos
         self.img_estrela = pygame.image.load('Assets\\recompensa\estrela.png').convert_alpha()
         self.img_planeta_80 = pygame.image.load('Assets\\planetas\planeta_80.png').convert_alpha()
         self.img_planeta_100 = pygame.image.load('Assets\\planetas\planeta_100.png').convert_alpha()
         self.img_pontos = pygame.transform.scale(self.img_estrela, (50,50))
         self.img_soprador = pygame.image.load('Assets\\soprador\soprador_80x80.png').convert_alpha()
-
+        self.img_portal = pygame.image.load('Assets\\portal\portal.png').convert_alpha()
+        self.img_portal_deitado = pygame.transform.rotate(self.img_portal, 90)
 
         # Efeitos sonoros
+        pygame.mixer.init()
         self.som_coletou = pygame.mixer.Sound('Assets/efeitos_sonoros/bonus.mp3')
         
 
+    
 
     def atualiza(self):
         for event in pygame.event.get():
@@ -63,7 +76,8 @@ class Fase():
                 return None
             # elif event.type == pygame.MOUSEBUTTONDOWN:
             #     self.pos_inicial = np.array([250,250])
-            
+
+
             elif event.type == pygame.MOUSEBUTTONUP:
                 if self.primeiro_click:
                     self.primeiro_click = False
@@ -76,19 +90,7 @@ class Fase():
                 
                 # caso o usuário aperte p, ele pode lançar a próxima bola
                 if event.key == pygame.K_p:
-                    self.indice += 1
-
-                    # DERROTA
-                    if self.indice >= self.n_bolas:
-                        return "derrota"
-                    
-                    if self.soprador:
-                        self.soprador.assoprou = False
-                    
-                    self.atual = self.bolas[self.indice]
-                    self.tentativa = False
-                    
-                    return self
+                    return morte(self)
 
 
         # realiza o lançamento da bola
@@ -102,33 +104,11 @@ class Fase():
                 
                 # verifica se a bola colidiu com algum planeta
                 if planeta.colisao_bola(self.atual.pos):
-                    self.indice += 1
-                    
-                    # DERROTA
-                    if self.indice >= self.n_bolas:
-                        return "derrota"
-                    if self.soprador:
-                        self.soprador.assoprou = False
-                    
-                    self.atual = self.bolas[self.indice]
-                    self.tentativa = False
-                    return self
+                    return morte(self)
         
         # verifica se a bola saiu da tela
         if self.atual.saiu_tela(WIDTH, HEIGHT):
-            self.indice += 1
-
-            # DERROTA
-            if self.indice >= self.n_bolas:
-                return "derrota"
-            
-            if self.soprador:
-                self.soprador.assoprou = False
-            
-            self.atual = self.bolas[self.indice]
-            self.tentativa = False
-
-            return self
+            return morte(self)
         
         # se houver portal, verifica a possibilidade de teletransportar
         if self.portais:
@@ -169,7 +149,7 @@ class Fase():
 
         # PLANETAS
         for planeta in self.planetas:
-            if planeta.raio == 80:
+            if planeta.raio == 40:
                 planeta.desenha(screen, self.img_planeta_80)
             else:
                 planeta.desenha(screen, self.img_planeta_100)
@@ -211,11 +191,9 @@ class Fase():
                 screen.blit(self.img_morto, pos)           
 
         # PORTAIS
-        cores_portais = [ROXO, AZUL]
         if self.portais:
-            for i in range(len(self.portais)):
-                portal = self.portais[i]
-                portal.desenha(screen, cores_portais[i])
+            for portal in self.portais:
+                portal.desenha(screen, self.img_portal, self.img_portal_deitado)
 
         if self.soprador:
             self.soprador.desenha(screen, self.img_soprador)

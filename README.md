@@ -8,9 +8,10 @@ O jogo "Ao infinito e além" foi desenvolvido para a disciplina de Álgebra Line
 </p>
 
 # Video do Jogo
-* **Link:** https://youtu.be/pZrxTLAaeHY
-[![Ao Infinito e Além | Vídeo demonstrativo](Assets/tela_inicial/menu_inicial.png.png)](https://youtu.be/pZrxTLAaeHY)
+[![Ao Infinito e Além | Vídeo demonstrativo do jogo](https://img.youtube.com/vi/pZrxTLAaeHY/0.jpg)](https://www.youtube.com/watch?v=pZrxTLAaeHY)
 * **Descrição:** Video demonstrativo do jogo
+* **Link:** https://youtu.be/pZrxTLAaeHY
+
 
 # Integrantes do Grupo
 * Isabelle da Silva Santos

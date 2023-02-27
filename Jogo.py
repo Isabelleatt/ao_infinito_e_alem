@@ -21,7 +21,7 @@ class Jogo:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Ao infinito e além!")
         
-        self.nivel_atual = 0
+        self.nivel_atual = 4
         self.tela_atual = Tela_menu(self.nivel_atual)
         self.clock = pygame.time.Clock()
         self.fps = 60

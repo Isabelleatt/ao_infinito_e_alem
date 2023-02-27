@@ -1,9 +1,9 @@
 import pygame
 from multiuso import *
 from telas.Tela_menu import Tela_menu
-from info_fases import info_fases
 
 class Tela_derrota():
+
     def __init__(self, fase_atual):
         self.fundo = pygame.image.load('Assets\\resultado\perdeu.png').convert_alpha()
         self.rect_botao_menu = (425,309,280,40)
@@ -11,6 +11,7 @@ class Tela_derrota():
         self.fase_atual = fase_atual
         self.nivel = fase_atual.nivel
     
+
     def atualiza(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -24,6 +25,7 @@ class Tela_derrota():
                         return tela
 
         return self    
+                
                 
     def desenha(self,screen,font):
         screen.fill(PRETO)

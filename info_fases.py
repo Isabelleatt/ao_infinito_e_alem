@@ -4,6 +4,7 @@ from elementos.Bola import Bola
 from elementos.Estrela import Estrela
 from elementos.Portal import Portal
 from elementos.Soprador import Soprador
+
 info_fases =[
     {
         "planetas": [Planeta(np.array([-100,-100]), 0.1, 0, 10)],
@@ -50,9 +51,9 @@ info_fases =[
         "pos_inicial": np.array([570,330]),
         "bolas": [Bola(np.array([570,330]), np.array([11,11])) for _ in range(5)],
         "qtd_bolas": 5,
-        "estrelas": [Estrela(np.array([400, 410]), 13), Estrela(np.array([330, 480]), 13), Estrela(np.array([305, 190]), 13)],
-        "portal": [Portal(np.array([200,620]), np.array([190,100]), np.array([80,5]), np.array([80,5]))],
+        "estrelas": [Estrela(np.array([410, 550]), 13), Estrela(np.array([400, 480]), 13), Estrela(np.array([405, 190]), 13)],
+        "portal": [Portal(np.array([400,620]), np.array([190,100]), np.array([80,5]), np.array([80,5]))],
         "soprador": Soprador(np.array([50,140]), np.array([80,80]), 150, 'direita'),
         "nivel": 4
     },
-]# 450,390
+]

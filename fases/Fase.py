@@ -66,6 +66,7 @@ class Fase():
         # Efeitos sonoros
         pygame.mixer.init()
         self.som_coletou = pygame.mixer.Sound('Assets/efeitos_sonoros/bonus.mp3')
+        self.som_soprador = pygame.mixer.Sound('Assets/efeitos_sonoros/soprador.mp3')
         
 
     
@@ -122,6 +123,7 @@ class Fase():
                 self.atual.vel = self.soprador.assoprar(self.atual.vel, self.atual.a)
                 print(self.atual.vel)
                 self.soprador.assoprou = True
+                pygame.mixer.Sound.play(self.som_soprador)
 
         # movimenta a bola
         self.atual.movimento()

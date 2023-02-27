@@ -1,6 +1,7 @@
 from multiuso import * 
 
 class Soprador():
+    
     def __init__(self, posicao, dimensao, alcance, direcao):
         self.pos = posicao
         self.dim = dimensao
@@ -8,8 +9,10 @@ class Soprador():
         self.assoprou = False
         self.direcao = direcao
     
+
     def desenha(self, screen, imagem):
         screen.blit(imagem, self.pos)
+
 
     def assoprar(self, vel_bola, a_bola):
         

@@ -1,4 +1,3 @@
-import pygame
 import numpy as np
 from multiuso import *
 
@@ -12,17 +11,15 @@ class Estrela:
     
     def desenha(self, screen, imagem):
         
+        # ajusta a posição da imagem para se encaixar com a posição desejada
         pos = self.pos - np.array([self.raio*1.75, self.raio*1.75])
-        # pygame.draw.circle(screen, ROSA, self.pos, self.raio)
+
         screen.blit(imagem, pos)
     
+    # verifica colisão entre bola e estrela
     def colisao_bola(self, pos_bola):
-        # return colisao_ponto_retangulo((self.pos[0], self.pos[0], 35,35), pos_bola[0], pos_bola[1])
+
         distancia = distancia_entre_pontos(self.pos, pos_bola)
-        
         if distancia <= self.raio + 8:
             return True
         return False
-
-
-        

@@ -20,14 +20,13 @@ class Bola():
         self.lancada = 0 # 0 - ainda não foi lançada, 1 - acabou de ser lançada, 2 - já está em movimento
         self.a = np.array([1,1]) # aceleração
 
-        
-
 
     def desenha(self, screen, cor):
         rect = pygame.Rect(self.pos, self.dim)
         self.surface.fill(cor)
         screen.blit(self.surface, rect)
     
+
     def lancamento(self, tentativa, pos_mouse):
         if self.lancada == 1 and not tentativa:
             self.lancada = 2
@@ -49,14 +48,20 @@ class Bola():
             return False
         return True
     
+
+    # verifica se a bolinha saiu da tela
     def saiu_tela(self, w, h):
         if self.pos[0] < 10  or self.pos[0] > w - 10 or self.pos[1] < 10 or self.pos[1] > h - 10:
             return True
         return False
 
+
+    # calcula o movimento da bolinha
     def movimento(self):
         self.pos = self.pos + 0.1 * self.vel
     
+    
+    # reinicia os atributos do objeto
     def reiniciar(self):
         self.vel = np.array([0,0])
         self.surface = pygame.Surface(self.dim)

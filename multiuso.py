@@ -26,12 +26,3 @@ def colisao_ponto_retangulo(rect, ponto_x, ponto_y):
             return True
         else:
             return False
-# # 
-# class Botão:
-#     def __init__(self,coord_x, coord_y, w, h, num ):
-#         self.x = coord_x
-#         self.y = coord_y
-#         self.w = w
-#         self.h = h
-
-    

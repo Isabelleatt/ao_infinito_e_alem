@@ -1,9 +1,10 @@
 import pygame
 from multiuso import *
 from telas.Tela_menu import Tela_menu
-from info_fases import info_fases
+
 
 class Tela_vitoria():
+
     def __init__(self, fase_atual, prox_fase):
         self.fundo = pygame.image.load('Assets\\resultado\ganhou.png').convert_alpha()
         self.rect_botao_menu = (425,258,230,40)
@@ -13,6 +14,7 @@ class Tela_vitoria():
         self.nivel = fase_atual.nivel
         self.prox_fase = prox_fase
     
+
     def atualiza(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -28,6 +30,7 @@ class Tela_vitoria():
                         tela = self.prox_fase
                         return tela
         return self    
+                
                 
     def desenha(self,screen,font):
         screen.fill(PRETO)

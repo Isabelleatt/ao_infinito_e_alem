@@ -3,6 +3,7 @@ from multiuso import *
 from telas.Tela_menu import Tela_menu
 
 class Tela_final():
+
     def __init__(self, fase_atual):
         self.fundo = pygame.image.load('Assets\\resultado\ganhou_final.png').convert_alpha()
         self.rect_botao_menu = (425,309,280,40)
@@ -10,6 +11,7 @@ class Tela_final():
         self.fase_atual = fase_atual
         self.nivel = fase_atual.nivel
     
+
     def atualiza(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -23,6 +25,7 @@ class Tela_final():
                         return tela
 
         return self    
+                
                 
     def desenha(self,screen,font):
         screen.fill(PRETO)

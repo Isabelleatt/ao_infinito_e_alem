@@ -1,20 +1,20 @@
-import pygame
 import numpy as np
-
 from multiuso import *
 
 class Planeta():
+
     def __init__(self, pos, dimensao, atmosfera, c):
         self.pos = pos # [pos horizontal, pos vertical]
         self.raio = dimensao 
-        self.atmosfera = atmosfera
+        self.atmosfera = atmosfera # alcance da força gravitacional do planeta
         self.c = c
     
+
     def desenha(self, screen, imagem):
-        # pygame.draw.circle(screen, ROSA, self.pos, self.raio)
         pos = self.pos - np.array([self.raio, self.raio])
         screen.blit(imagem, pos)
     
+
     def calcula_gravidade(self,pos_bola, a_bola, vel_bola):
         dist = distancia_entre_pontos(self.pos, pos_bola)
         if dist < self.atmosfera:
@@ -34,6 +34,8 @@ class Planeta():
 
         return a_bola, vel_bola
     
+
+    # verifica colisão entre bola e planeta
     def colisao_bola(self, pos_bola):
         distancia = distancia_entre_pontos(self.pos, pos_bola)
         if distancia <= self.raio + 5:

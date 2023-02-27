@@ -1,6 +1,5 @@
 import pygame
 from multiuso import *
-from info_fases import info_fases
 
 class Regras():
 
@@ -10,6 +9,7 @@ class Regras():
         self.botao_prox_tela = (700,600,60,60) 
         self.botao_volta_tela = (620,600,60,60)
     
+
     def atualiza(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -25,6 +25,7 @@ class Regras():
                         if self.tela_regra < 0:
                             return "menu"
         return self     
+                
                 
     def desenha(self,screen,font):
         screen.fill(PRETO)

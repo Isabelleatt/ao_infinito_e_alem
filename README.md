@@ -42,8 +42,10 @@ Para rodar o jogo é apenas necessário executar o arquivo main.py, podendo o me
 4. O jogo possui 4 fases que se tornam cada vez mais difíceis;
 5. Os planetas são os obstáculos do jogo, que possuem uma força gravitacional que atraem a bolinha para o seu centro;
 6. Para lançar a bolinha, o jogador terá como apoio para mirar em direção as estrelas, uma linha branca que indica a direção e a força do lançamento;
-7. O jogador pode utilizar a força gravitacional dos planetas para acertar as estrelas, porém, se a bolinha colidir com um planeta, o jogador perde uma vida;
-8. Na 3° e 4° fase, o jogador poderá utilizar um portal para teletransportar a bolinha para o outro local do espaço, facilitando que a bolinha desvie dos planetas;
+8. Caso o jogador, queira atirar uma nova bolinha sem que a anterior tenha parado, basta ele apertar a tecla P;
+9. O jogador pode utilizar a força gravitacional dos planetas para acertar as estrelas, porém, se a bolinha colidir com um planeta, o jogador perde uma vida;
+10. Na 3° e 4° fase, o jogador poderá utilizar um portal para teletransportar a bolinha para o outro local do espaço, facilitando que a bolinha desvie dos planetas;
+11. Na última fase, o jogador poderá utilizar um soprador para acelerar a velocidade da bolinha em certa direção.
 
 # Descrição Matemática | Modelo Físico
 
@@ -65,9 +67,11 @@ vetor_aceleracao = direcao/modulo_vetor
 ```
 
 Quanto maior a distância do mouse em relação a bolinha, maior a velocidade do lançamento. Por isso, a magnitude do vetor de aceleração (```self.vel```) é calculada através da força elástica. 
+
 $$
 \boldsymbol{F_e} = K * x
 $$
+
 Sendo $K$ a constante elástica, e $x$ o quanto o elástico se deformou, nesse caso a distância (em módulo) entre centro da bolinha e o clique do jogador.
 
 ```
